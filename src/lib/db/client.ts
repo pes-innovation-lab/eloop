@@ -1,4 +1,4 @@
-import { createClient, type Client } from '@libsql/client/web';
+import { createClient, type Client, type InStatement, type InArgs } from '@tursodatabase/serverless/compat';
 
 // Read and validate Turso environment variables early but do not fail imports
 const TURSO_URL = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL;
@@ -12,14 +12,20 @@ if (!TURSO_AUTH) {
   console.warn('Warning: TURSO_AUTH_TOKEN is not set. Authenticated operations may fail.');
 }
 
-// Initialize Turso client (stub when not configured) so importing modules doesn't throw
-export const turso: Pick<Client, 'execute'> = TURSO_URL
-  ? createClient({ url: TURSO_URL, authToken: TURSO_AUTH || undefined })
-  : {
-    execute: async () => {
+export const turso: Pick<Client, 'execute'> = {
+  async execute(statement: InStatement, args?: InArgs) {
+    if (!TURSO_URL) {
       throw new Error('TURSO_DATABASE_URL is not configured. Database operations are disabled. Set TURSO_DATABASE_URL to enable DB features.');
-    },
-  };
+    }
+    // SDK locks and sessions must never be shared across Workers requests.
+    const client = createClient({ url: TURSO_URL, authToken: TURSO_AUTH || undefined });
+    try {
+      return await client.execute(typeof statement === 'string' ? { sql: statement, args } : statement);
+    } finally {
+      client.close();
+    }
+  },
+};
 
 
 // NOTE: Do NOT run initialization on import. Initialization is handled

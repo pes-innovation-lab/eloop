@@ -39,7 +39,7 @@ async function checkAndInitDb() {
     throw new Error('Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN from your Turso dashboard or CLI before running db:init.');
   }
 
-  const { createClient } = await import('@libsql/client');
+  const { createClient } = await import('@tursodatabase/serverless/compat');
   const turso = createClient({
     url: tursoUrl,
     authToken: process.env.TURSO_AUTH_TOKEN,

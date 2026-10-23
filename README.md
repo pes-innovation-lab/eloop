@@ -31,6 +31,8 @@ turso db tokens create eloop
 ```
 
 Set `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` from those commands or the Turso dashboard.
+The app and bootstrap script use `@tursodatabase/serverless/compat`, Turso's fetch-based
+SDK with the existing SQL execution API. The database URL, token, and schema stay unchanged.
 For a **new, empty database only**, explicitly initialize the tables:
 
 ```sh
@@ -113,6 +115,9 @@ bun --env-file=.dev.vars scripts/smoke-workers.ts
 
 The smoke check exercises auth endpoints, signed sessions, proxy redirects, HTML rendering,
 and QR signing without accessing Turso or completing a real Google OAuth exchange.
+
+Run `bun test scripts/turso-client.test.ts` for mocked database SDK compatibility checks
+(statement arguments, row access, write metadata, and SQL errors); no live database is used.
 
 ## License
 

@@ -15,7 +15,7 @@
     "@dnd-kit/sortable": "^10.0.0",
     "@dnd-kit/utilities": "^3.2.2",
     "@heroicons/react": "^2.2.0",
-    "@libsql/client": "^0.18.0",
+    "@tursodatabase/serverless": "^1.4.1",
     "@yudiel/react-qr-scanner": "^2.6.0",
     "@zxing/browser": "^0.2.1",
     "dotenv": "^18.0.8",
