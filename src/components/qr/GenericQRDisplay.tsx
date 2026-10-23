@@ -301,7 +301,7 @@ export const GenericQRDisplay: React.FC<GenericQRDisplayProps> = ({
         <div className="px-4 py-3">
           <div className="flex justify-center">
             <div className="w-[260px] h-[260px] md:w-[320px] md:h-[320px] relative">
-              <Image src={qrImage} alt="QR Code" fill style={{ objectFit: 'contain' }} className="rounded" />
+              <Image src={qrImage} alt="QR Code" fill unoptimized style={{ objectFit: 'contain' }} className="rounded" />
             </div>
           </div>
           <div className="mt-3 text-center">
