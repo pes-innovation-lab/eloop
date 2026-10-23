@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Geist, Geist_Mono } from "next/font/google";
 import { NextAuthProvider } from "@/components/auth/AuthProvider";
 import AuthRoleVerifier from "@/components/auth/AuthRoleVerifier";
@@ -45,8 +43,6 @@ export default function RootLayout({
           <AuthRoleVerifier />
           <CommandPalette />
         </NextAuthProvider>
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );

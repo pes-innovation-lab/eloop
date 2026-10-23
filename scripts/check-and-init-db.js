@@ -1,5 +1,5 @@
 // Database initialization script
-// Usage: npx tsx scripts/check-and-init-db.js
+// Usage: bun run db:init (explicitly, never during a build or deployment)
 
 import { config } from 'dotenv';
 import fs from 'fs';
@@ -36,9 +36,7 @@ async function checkAndInitDb() {
     } else {
       console.warn('No env files were found in the project root.');
     }
-    console.warn('\nRun: vercel env pull .env.development.local');
-    // Return false so callers know init was skipped; do NOT exit the process so `next dev` can continue.
-    return false;
+    throw new Error('Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN from your Turso dashboard or CLI before running db:init.');
   }
 
   const { createClient } = await import('@libsql/client');
@@ -218,11 +216,7 @@ async function checkAndInitDb() {
 async function main() {
   console.log('Checking database status...');
   try {
-    const result = await checkAndInitDb();
-    if (result === false) {
-      console.warn('Skipping DB initialization — continuing in development mode.');
-      return;
-    }
+    await checkAndInitDb();
   } catch (error) {
     console.error('❌ Database check failed:', error);
     process.exit(1);

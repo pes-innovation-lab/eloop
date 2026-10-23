@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { GenericQRScanner } from '../qr/GenericQRScanner';
 import { Check, AlertTriangle, X, RefreshCw } from 'lucide-react';
+import ELogoLoader from '@/components/ui/ELogoLoader';
 
 interface CheckInProps {
   eventId: string;
@@ -118,10 +119,7 @@ export const EventCheckIn: React.FC<CheckInProps> = ({ eventId, onSuccess }) => 
         <div>
           {isProcessing ? (
             <div className="text-center py-8">
-              {(() => {
-                const ELogoLoader = require("@/components/ui/ELogoLoader").default;
-                return <ELogoLoader size={56} colorClass="text-blue-500" label="Loading data..." className="mb-4" />;
-              })()}
+              <ELogoLoader size={56} colorClass="text-blue-500" label="Loading data..." className="mb-4" />
               <p className="text-gray-600">Processing check-in...</p>
             </div>
           ) : error ? (

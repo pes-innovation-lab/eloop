@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import SharedDashboardLayout from '@/components/dashboard/SharedDashboardLayout';
+import ELogoLoader from '@/components/ui/ELogoLoader';
 import dynamic from 'next/dynamic';
 const GuidedTour = dynamic(() => import('@/components/dashboard/GuidedTour'), { ssr: false });
 import type { UserRole } from '@/types';
@@ -139,10 +140,7 @@ export default function DashboardLayout({
   if (status === 'loading') {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        {(() => {
-          const ELogoLoader = require("@/components/ui/ELogoLoader").default;
-          return <ELogoLoader size={56} colorClass="text-purple-600" label="Loading dashboard..." />;
-        })()}
+        <ELogoLoader size={56} colorClass="text-purple-600" label="Loading dashboard..." />
       </div>
     );
   }

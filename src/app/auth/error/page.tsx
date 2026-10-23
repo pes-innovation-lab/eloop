@@ -3,6 +3,7 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import ELogoLoader from "@/components/ui/ELogoLoader";
 
 function ErrorContent() {
   const searchParams = useSearchParams();
@@ -63,14 +64,11 @@ function ErrorContent() {
 export default function AuthError() {
   return (
     <Suspense
-      fallback={(() => {
-        const ELogoLoader = require("@/components/ui/ELogoLoader").default;
-        return (
-          <div className="flex items-center justify-center min-h-[40vh]">
-            <ELogoLoader size={52} colorClass="text-red-600" label="Loading error details..." />
-          </div>
-        );
-      })()}
+      fallback={
+        <div className="flex items-center justify-center min-h-[40vh]">
+          <ELogoLoader size={52} colorClass="text-red-600" label="Loading error details..." />
+        </div>
+      }
     >
       <ErrorContent />
     </Suspense>

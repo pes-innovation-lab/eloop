@@ -1,20 +1,4 @@
-import { createClient } from '@libsql/client';
-import { config as loadDotenv } from 'dotenv';
-import fs from 'fs';
-import path from 'path';
-
-// Ensure common .env files are read when running in environments where
-// We try in order but do not override any already-present env vars.
-const envFiles = ['.env', '.env.local', '.env.development', '.env.development.local'];
-for (const f of envFiles) {
-  const p = path.resolve(process.cwd(), f);
-  if (fs.existsSync(p)) {
-    try {
-      loadDotenv({ path: p, override: false });
-    } catch (e) {
-    }
-  }
-}
+import { createClient } from '@libsql/client/web';
 
 // Read and validate Turso environment variables early but do not fail imports
 const TURSO_URL = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL;
@@ -39,7 +23,7 @@ export const turso = TURSO_URL
 
 
 // NOTE: Do NOT run initialization on import. Initialization is handled
-// explicitly by `scripts/check-and-init-db.js` during build or by calling
+// explicitly by `bun run db:init` or by calling
 // `initDatabase()` from a controlled bootstrap path. Avoiding network calls
 // during module import prevents unexpected behavior during builds.
 

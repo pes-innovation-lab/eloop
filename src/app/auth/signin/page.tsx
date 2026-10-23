@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import SignInClient from "@/components/auth/SignInClient";
 import { getMissingEnvVars } from "@/lib/env";
+import ELogoLoader from "@/components/ui/ELogoLoader";
 
 export default function SignIn() {
   const missing = getMissingEnvVars();
@@ -47,14 +48,11 @@ export default function SignIn() {
 
   return (
     <Suspense
-      fallback={(() => {
-        const ELogoLoader = require("@/components/ui/ELogoLoader").default;
-        return (
-          <div className="flex items-center justify-center min-h-[40vh]">
-            <ELogoLoader size={52} colorClass="text-indigo-600" label="Loading sign-in..." />
-          </div>
-        );
-      })()}
+      fallback={
+        <div className="flex items-center justify-center min-h-[40vh]">
+          <ELogoLoader size={52} colorClass="text-indigo-600" label="Loading sign-in..." />
+        </div>
+      }
     >
       <SignInClient />
     </Suspense>

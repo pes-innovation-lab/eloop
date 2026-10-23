@@ -35,6 +35,8 @@ yarn-error.log*
 .env.local
 .env.development.local
 .env.production
+.dev.vars
+.dev.vars.*
 
 # vercel
 .vercel
@@ -47,3 +49,7 @@ certificates
 .env*.local
 
 *.csv
+/dist/
+.vinext/
+.cloudflare/
+.wrangler/
