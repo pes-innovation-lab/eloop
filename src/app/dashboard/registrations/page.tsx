@@ -116,7 +116,7 @@ export default function RegistrationsPage() {
 
           <div className="bg-amber-50 border border-amber-200 text-amber-700 px-5 py-4 rounded-xl space-y-1">
             <p className="font-medium">Registration Pending Approval</p>
-            <p className="text-sm">Your registration is awaiting approval from the event organizer. You'll access your QR code once approved.</p>
+            <p className="text-sm">Your registration is awaiting approval from the event organizer. You&apos;ll access your QR code once approved.</p>
           </div>
         </div>
       );

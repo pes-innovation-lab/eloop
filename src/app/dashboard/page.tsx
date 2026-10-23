@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 const GuidedTour = dynamic(() => import('@/components/dashboard/GuidedTour'), { ssr: false });
 import Link from 'next/link';
@@ -8,10 +8,43 @@ import { useSession, signOut } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import UserRegistrationsSection from '@/components/dashboard/UserRegistrationsSection';
 import { getApprovalMessage } from '@/lib/approvalMessage';
+import type { Event } from '@/types';
 
 interface DashboardStats {
   role: string;
   [key: string]: string | number | boolean;
+}
+
+function StatCard({
+  label,
+  value,
+  href,
+  helper,
+  accent = 'text-indigo-600',
+  dataTour,
+}: {
+  label: string;
+  value: string | number;
+  href?: string;
+  helper?: string;
+  accent?: string;
+  dataTour?: string;
+}) {
+  const content = (
+    <div data-tour={dataTour} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition">
+      <p className="text-sm text-slate-500">{label}</p>
+      <p className={`text-3xl font-semibold mt-1 ${accent}`}>{value}</p>
+      {helper && <p className="text-xs text-slate-500 mt-2">{helper}</p>}
+    </div>
+  );
+  if (href) {
+    return (
+      <Link href={href} data-tour={dataTour} className="block">
+        {content}
+      </Link>
+    );
+  }
+  return content;
 }
 
 export default function UnifiedDashboard() {
@@ -20,45 +53,11 @@ export default function UnifiedDashboard() {
   const searchParams = useSearchParams();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
-  const [latestEvent, setLatestEvent] = useState<any>(null);
-  const [allEvents, setAllEvents] = useState<any[]>([]);
+  const [latestEvent, setLatestEvent] = useState<Event | null>(null);
+  const [allEvents, setAllEvents] = useState<Event[]>([]);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [registeredEventName, setRegisteredEventName] = useState<string>('');
   const [hasRegistration, setHasRegistration] = useState(false);
-
-  // Guided tour state (must be defined unconditionally to avoid hook order mismatch)
-
-  const StatCard = ({
-    label,
-    value,
-    href,
-    helper,
-    accent = 'text-indigo-600',
-    dataTour,
-  }: {
-    label: string;
-    value: string | number;
-    href?: string;
-    helper?: string;
-    accent?: string;
-    dataTour?: string;
-  }) => {
-    const content = (
-      <div data-tour={dataTour} className="bg-white border border-slate-200 rounded-xl p-4 shadow-sm hover:shadow-md transition">
-        <p className="text-sm text-slate-500">{label}</p>
-        <p className={`text-3xl font-semibold mt-1 ${accent}`}>{value}</p>
-        {helper && <p className="text-xs text-slate-500 mt-2">{helper}</p>}
-      </div>
-    );
-    if (href) {
-      return (
-        <Link href={href} data-tour={dataTour} className="block">
-          {content}
-        </Link>
-      );
-    }
-    return content;
-  };
 
   const approvalMessageHtml = getApprovalMessage(session?.user?.email || '');
 
@@ -106,38 +105,22 @@ export default function UnifiedDashboard() {
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-      return;
-    }
-
-    if (status === 'authenticated') {
-      fetchStats();
-
-      // Fetch events for mentors and applicants
-      if (session?.user?.role === 'applicant' || session?.user?.role === 'mentor') {
-        fetchAllEvents();
-      }
-    }
-  }, [status, router, session?.user?.role]);
-
   // Previously we auto-started the tour for organizers with 0 events. That behavior was noisy
   // and caused the tour popup to appear unexpectedly; prefer manual start instead.
   // The Start button is shown only when stats.events === 0.
   // (Left intentionally blank — no auto-start logic.)
 
-  const fetchAllEvents = async () => {
+  async function fetchAllEvents() {
     try {
       const res = await fetch('/api/events');
       if (!res.ok) return;
       const data = await res.json();
-      const events = data.events || [];
+      const events: Event[] = data.events || [];
       setAllEvents(events);
 
       // Also set latest event for applicants
       if (session?.user?.role === 'applicant' && events.length > 0) {
-        const sortedEvents = [...events].sort((a: any, b: any) => {
+        const sortedEvents = [...events].sort((a, b) => {
           const dateA = new Date(a.date);
           const dateB = new Date(b.date);
           return dateB.getTime() - dateA.getTime();
@@ -147,9 +130,9 @@ export default function UnifiedDashboard() {
     } catch (error) {
       console.error('Error fetching events:', error);
     }
-  };
+  }
 
-  const fetchStats = async () => {
+  async function fetchStats() {
     try {
       const res = await fetch('/api/dashboard/stats');
       if (!res.ok) throw new Error('Failed to fetch stats');
@@ -172,29 +155,23 @@ export default function UnifiedDashboard() {
     } finally {
       setLoading(false);
     }
-  };
+  }
 
-  const fetchLatestEvent = async () => {
-    try {
-      const res = await fetch('/api/events');
-      if (!res.ok) return;
-      const data = await res.json();
-      const events = data.events || [];
-
-      // Sort by date, get the latest
-      const sortedEvents = [...events].sort((a: any, b: any) => {
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateB.getTime() - dateA.getTime();
-      });
-
-      if (sortedEvents.length > 0) {
-        setLatestEvent(sortedEvents[0]);
-      }
-    } catch (error) {
-      console.error('Error fetching latest event:', error);
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+      return;
     }
-  };
+
+    if (status === 'authenticated') {
+      fetchStats();
+
+      // Fetch events for mentors and applicants
+      if (session?.user?.role === 'applicant' || session?.user?.role === 'mentor') {
+        fetchAllEvents();
+      }
+    }
+  }, [status, router, session?.user?.role]);
 
   // Guided tour state
   const [showTour, setShowTour] = useState(false);

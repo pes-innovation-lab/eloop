@@ -1,11 +1,13 @@
-import { FlatCompat } from "@eslint/eslintrc";
-
-const compat = new FlatCompat({
-  baseDirectory: import.meta.dirname,
-});
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTypescript from "eslint-config-next/typescript";
 
 const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  ...nextVitals,
+  ...nextTypescript,
+  {
+    // Keep effect-state performance advice visible without requiring a UI rewrite.
+    rules: { "react-hooks/set-state-in-effect": "warn" },
+  },
   {
     ignores: [
       "node_modules/**",
@@ -14,6 +16,7 @@ const eslintConfig = [
       "build/**",
       "dist/**",
       ".cloudflare/**",
+      ".wrangler/**",
       "next-env.d.ts",
     ],
   },

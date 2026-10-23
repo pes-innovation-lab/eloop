@@ -65,7 +65,7 @@ export default function AdminUsersPage() {
   // Filter users based on role filter; if organizer, hide admins and self
   useEffect(() => {
     const q = searchQuery.trim().toLowerCase();
-    let byRole = roleFilter === 'all' ? visibleUsers : visibleUsers.filter(user => user.role === roleFilter);
+    const byRole = roleFilter === 'all' ? visibleUsers : visibleUsers.filter(user => user.role === roleFilter);
 
     if (!q) {
       setFilteredUsers(byRole);

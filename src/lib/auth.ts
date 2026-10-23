@@ -165,8 +165,7 @@ export async function auth(): Promise<Session | null> {
     // Fallback to null on any error to avoid build-time crashes
     // `getServerSession` accepts the auth options and reads cookies from the environment
     // in Next.js server environment.
-    // @ts-ignore - `getServerSession` typing can be awkward in some Next.js/Bun setups
-    const session = await getServerSession(authConfig as any);
+    const session = await getServerSession(authConfig);
     return (session as Session) ?? null;
   } catch (error) {
     return null;

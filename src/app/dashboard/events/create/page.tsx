@@ -351,9 +351,8 @@ export default function CreateEventPage() {
         formFields: formFields,
       };
 
-      let response;
       // Create new event
-      response = await fetch('/api/events/create', {
+      const response = await fetch('/api/events/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

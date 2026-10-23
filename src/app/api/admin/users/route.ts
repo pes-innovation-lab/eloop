@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 
     let users;
     if (role) {
-      users = await getUsersByRole(role as any);
+      users = await getUsersByRole(role as UserRole);
     } else {
       users = await getAllUsers();
     }

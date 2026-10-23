@@ -214,14 +214,14 @@ export default function CheckInPage() {
     }
   }, [session, router]);
 
-  const playSuccessSound = () => {
+  function playSuccessSound() {
     if (successSoundRef.current) {
       successSoundRef.current.currentTime = 0;
       successSoundRef.current.play().catch(e => console.log('Audio play failed:', e));
     }
-  };
+  }
 
-  const playErrorSound = () => {
+  function playErrorSound() {
     if (errorSoundRef.current) {
       // Play error sound 3 times with short delays
       const playBeep = (count: number) => {
@@ -233,7 +233,7 @@ export default function CheckInPage() {
       };
       playBeep(3);
     }
-  };
+  }
 
   const handleScan = async (qrData: string) => {
     if (isProcessing) return;

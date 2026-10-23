@@ -43,7 +43,7 @@ export default function ScanLogsPage() {
     fetchFailedScans();
   }, [session, status, router]);
 
-  const fetchFailedScans = async () => {
+  async function fetchFailedScans() {
     setLoadingScans(true);
     try {
       const response = await fetch('/api/admin/failed-scans');
@@ -70,9 +70,7 @@ export default function ScanLogsPage() {
     } finally {
       setLoadingScans(false);
     }
-  };
-
-
+  }
 
   if (status === 'loading') {
     return (

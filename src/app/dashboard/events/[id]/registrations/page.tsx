@@ -769,7 +769,7 @@ export default function PendingRegistrationsPage({ params }: PageParams) {
                 key={key}
                 onClick={() => {
                   setViewMode('registrations');
-                  setStatusFilter(key as any);
+                   setStatusFilter(key as typeof statusFilter);
                   const params = new URLSearchParams(window.location.search);
                   params.set('status', key);
                   router.push(`?${params.toString()}`, { scroll: false });
@@ -1018,7 +1018,7 @@ export default function PendingRegistrationsPage({ params }: PageParams) {
           <div>
             <p className="text-xs uppercase tracking-wide text-slate-500">CSV SYNC STATUS</p>
             <h2 className="text-lg font-semibold text-slate-900">Unmatched CSV Entries</h2>
-            <p className="text-sm text-slate-600 mt-1">Entries in the uploaded CSV that don't correspond to any platform registration</p>
+            <p className="text-sm text-slate-600 mt-1">Entries in the uploaded CSV that don&apos;t correspond to any platform registration</p>
           </div>
           {(() => {
             // Build a set of matched keys from registrations (case-insensitive)

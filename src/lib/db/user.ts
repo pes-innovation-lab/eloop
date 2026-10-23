@@ -322,7 +322,6 @@ export async function deleteUser(userId: string): Promise<boolean> {
 
   // `result` shape may vary; check rowsAffected or similar if available
   try {
-    // @ts-ignore
     if (typeof result.rowsAffected === 'number') {
       // rowsAffected available
       return result.rowsAffected > 0;

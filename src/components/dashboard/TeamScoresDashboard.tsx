@@ -678,7 +678,7 @@ export default function TeamScoresDashboard({ eventId }: { eventId: string }) {
                                             </div>
                                             {score.notes && (
                                                 <p className="text-sm text-slate-700 bg-white p-2 rounded-lg italic border border-slate-200">
-                                                    "{score.notes}"
+                                                    &quot;{score.notes}&quot;
                                                 </p>
                                             )}
                                             <div className="flex items-center justify-between mt-2">

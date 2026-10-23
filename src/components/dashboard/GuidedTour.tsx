@@ -274,7 +274,7 @@ export default function GuidedTour({ open, onClose }: { open: boolean; onClose: 
             )}
 
             {/* tooltip */}
-            <div ref={tooltipRef} tabIndex={0} style={{ ...(tooltipStyle as any), cursor: dragging ? 'grabbing' : 'grab' }} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerCancel={handlePointerCancel} className="pointer-events-auto z-[10001] max-w-xl w-[min(90%,48rem)]">
+            <div ref={tooltipRef} tabIndex={0} style={{ ...tooltipStyle, cursor: dragging ? 'grabbing' : 'grab' }} onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp} onPointerCancel={handlePointerCancel} className="pointer-events-auto z-[10001] max-w-xl w-[min(90%,48rem)]">
                 <div className="bg-white rounded-2xl shadow-lg p-5">
                     <div className="flex items-start justify-between gap-4">
                         <div>

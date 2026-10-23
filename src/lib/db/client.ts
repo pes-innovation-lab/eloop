@@ -1,4 +1,4 @@
-import { createClient } from '@libsql/client/web';
+import { createClient, type Client } from '@libsql/client/web';
 
 // Read and validate Turso environment variables early but do not fail imports
 const TURSO_URL = process.env.TURSO_DATABASE_URL || process.env.DATABASE_URL;
@@ -13,13 +13,13 @@ if (!TURSO_AUTH) {
 }
 
 // Initialize Turso client (stub when not configured) so importing modules doesn't throw
-export const turso = TURSO_URL
+export const turso: Pick<Client, 'execute'> = TURSO_URL
   ? createClient({ url: TURSO_URL, authToken: TURSO_AUTH || undefined })
-  : ({
+  : {
     execute: async () => {
       throw new Error('TURSO_DATABASE_URL is not configured. Database operations are disabled. Set TURSO_DATABASE_URL to enable DB features.');
     },
-  } as any);
+  };
 
 
 // NOTE: Do NOT run initialization on import. Initialization is handled

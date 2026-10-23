@@ -338,7 +338,7 @@ export async function getOrCreateTeamScore(
 ): Promise<TeamScore> {
     await ensureTablesExist();
     // Check if already exists
-    let result = await turso.execute({
+    const result = await turso.execute({
         sql: `SELECT * FROM team_scores WHERE team_id = ? AND scoring_round_id = ?`,
         args: [teamId, scoringRoundId]
     });

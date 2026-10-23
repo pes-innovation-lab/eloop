@@ -277,7 +277,7 @@ export default function EventPage({ params }: PageParams) {
       <div className="mx-6 py-12">
         <div className="bg-rose-50 border border-rose-200 text-rose-700 px-5 py-4 rounded-xl space-y-2">
           <p className="font-medium">Error: {error || 'Event not found'}</p>
-          <p className="text-sm">The event you're looking for might have been removed or doesn't exist.</p>
+          <p className="text-sm">The event you&apos;re looking for might have been removed or doesn&apos;t exist.</p>
         </div>
         <Link href="/dashboard/events" className="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium mt-6">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

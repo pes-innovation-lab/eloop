@@ -32,7 +32,7 @@ export default function AdminViewAsPage() {
     <div className="space-y-6">
       <div className="mx-6 pt-6">
         <h1 className="text-2xl font-semibold text-slate-900">View as User</h1>
-        <p className="text-slate-500 mt-1">Preview a participant's registration view</p>
+        <p className="text-slate-500 mt-1">Preview a participant&apos;s registration view</p>
       </div>
 
       <div className="mx-6">
